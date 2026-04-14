@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nathan Ashbaugh — Web developer and app builder serving Grass Valley and Nevada City, CA." />
+  <title>Nathan Ashbaugh — Web &amp; App Developer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231C0E06'/><text y='.82em' font-size='72' x='12'>🦬</text></svg>" />
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav id="nav">
+  <div class="container">
+
+    <button class="nav-logo" data-page="home" aria-label="Home">
+      <img src="assets/bison_logo_nav.svg" alt="" aria-hidden="true"
+           width="60" height="42" style="display:block;"/>
+      <div class="nav-logo-name">
+        Nathan Ashbaugh
+        <small>Web &amp; App Developer</small>
+      </div>
+    </button>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" data-page="home">Home</a></li>
+      <li><a href="#" data-page="services">Services</a></li>
+      <li><a href="#" data-page="work">Work</a></li>
+      <li><a href="#" data-page="about">About</a></li>
+      <li><a href="#" data-page="game">Game</a></li>
+      <li><a href="#" data-page="contact" class="nav-cta">Let's Talk</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     SPA APP CONTAINER
+     ============================================================ -->
+<div id="app">
+
+  <!-- ==========================
+       PAGE: HOME
+       ========================== -->
+  <div class="page active" id="page-home" data-title="Nathan Ashbaugh — Developer">
+
+    <!-- Foothills scene background -->
+    <div class="hero-scene" aria-hidden="true">
+      <div class="hero-sky"></div>
+      <div class="hero-sun"></div>
+
+      <!-- Rolling hills -->
+      <svg class="hero-hills" viewBox="0 0 1440 320" preserveAspectRatio="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 200 Q200 100 400 180 Q600 260 800 160 Q1000 60 1200 180 Q1340 250 1440 190 L1440 320 L0 320Z"
+              fill="#2A4020" opacity="0.6"/>
+        <path d="M0 250 Q250 180 500 230 Q750 280 1000 210 Q1200 150 1440 230 L1440 320 L0 320Z"
+              fill="#3A5028" opacity="0.75"/>
+        <path d="M0 295 Q400 265 800 285 Q1100 300 1440 275 L1440 320 L0 320Z"
+              fill="#2C3C1C"/>
+      </svg>
+
+      <!-- Oak silhouettes -->
+      <svg class="hero-oaks" viewBox="0 0 1440 280" preserveAspectRatio="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <!-- Left tree -->
+        <g transform="translate(40,30)">
+          <rect x="22" y="130" width="8" height="100" rx="4" fill="#1A1008"/>
+          <ellipse cx="26" cy="110" rx="36" ry="26" fill="#1E2C12"/>
+          <ellipse cx="10" cy="120" rx="24" ry="18" fill="#182410"/>
+          <ellipse cx="44" cy="122" rx="20" ry="16" fill="#1E2C12"/>
+        </g>
+        <!-- Left 2 -->
+        <g transform="translate(190,60)">
+          <rect x="18" y="110" width="6" height="80" rx="3" fill="#1A1008"/>
+          <ellipse cx="21" cy="92" rx="28" ry="20" fill="#182410"/>
+          <ellipse cx="7" cy="100" rx="18" ry="14" fill="#1E2C12"/>
+          <ellipse cx="36" cy="102" rx="16" ry="13" fill="#182410"/>
+        </g>
+        <!-- Right tree -->
+        <g transform="translate(1210,20)">
+          <rect x="24" y="140" width="10" height="110" rx="5" fill="#1A1008"/>
+          <ellipse cx="29" cy="118" rx="42" ry="30" fill="#1E2C12"/>
+          <ellipse cx="10" cy="130" rx="28" ry="20" fill="#182410"/>
+          <ellipse cx="50" cy="132" rx="24" ry="18" fill="#1E2C12"/>
+        </g>
+        <!-- Right 2 -->
+        <g transform="translate(1360,50)">
+          <rect x="18" y="120" width="7" height="90" rx="3.5" fill="#1A1008"/>
+          <ellipse cx="21" cy="100" rx="32" ry="22" fill="#182410"/>
+          <ellipse cx="6" cy="110" rx="20" ry="16" fill="#1E2C12"/>
+          <ellipse cx="38" cy="112" rx="18" ry="14" fill="#182410"/>
+        </g>
+        <!-- Mid right -->
+        <g transform="translate(980,70)">
+          <rect x="16" y="108" width="6" height="80" rx="3" fill="#1A1008"/>
+          <ellipse cx="19" cy="90" rx="26" ry="19" fill="#1E2C12"/>
+          <ellipse cx="5" cy="100" rx="17" ry="13" fill="#182410"/>
+          <ellipse cx="33" cy="102" rx="14" ry="12" fill="#1E2C12"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="page-inner">
+      <div class="container">
+        <div class="hero-content">
+
+          <div class="hero-location">Grass Valley &amp; Nevada City, CA</div>
+
+          <h1>
+            Modern Code<br>
+            <em>Built for the Foothills.</em>
+          </h1>
+
+          <p class="hero-sub">
+            I build clean, fast websites and custom applications
+            for local businesses and individuals — from a simple landing
+            page to a full working app.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-page="work">See My Work</button>
+            <button class="btn btn-ghost" data-page="contact">Start a Project</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick-nav hints -->
+      <div class="page-nav-hints" aria-hidden="true">
+        <button class="page-nav-hint" data-page="services">Services →</button>
+        <button class="page-nav-hint" data-page="work">Work →</button>
+        <button class="page-nav-hint" data-page="about">About →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       PAGE: SERVICES
+       ========================== -->
+  <div class="page" id="page-services" data-title="Services — Nathan Ashbaugh">
+    <div class="page-inner">
+      <div class="container">
+
+        <div class="page-header">
+          <span class="eyebrow">What I Do</span>
+          <h2>Services Built Around<br>Your Actual Needs</h2>
+        </div>
+
+        <div class="services-grid stagger" id="servicesGrid">
+
+          <div class="service-card">
+            <div class="service-icon">
+              <!-- Globe icon -->
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            </div>
+            <h3>Business Websites</h3>
+            <p>Fast, mobile-first websites that look professional and show up in local search. From a single landing page to a full multi-page build.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <!-- App grid icon -->
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </div>
+            <h3>Custom Web Apps</h3>
+            <p>Need a booking system, customer portal, or inventory tool? I build purpose-built apps that solve your specific problem and nothing more.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <!-- Chart icon -->
+              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Data &amp; Automation</h3>
+            <p>Connect your tools, automate repetitive tasks, and build simple dashboards that give you a real-time view of your business.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <!-- Wrench icon -->
+              <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <h3>Fixes &amp; Upgrades</h3>
+            <p>Got a site that's broken, slow, or outdated? I'll diagnose the problem, fix it, and hand it back running better than before.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       PAGE: WORK
+       ========================== -->
+  <div class="page" id="page-work" data-title="Work — Nathan Ashbaugh">
+    <div class="page-inner">
+      <div class="container">
+
+        <div class="page-header">
+          <span class="eyebrow">Portfolio</span>
+          <h2>Recent Projects</h2>
+        </div>
+
+        <div class="work-toolbar">
+          <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="web">Websites</button>
+            <button class="filter-btn" data-filter="app">Apps</button>
+            <button class="filter-btn" data-filter="data">Data</button>
+          </div>
+        </div>
+
+        <div class="projects-grid stagger" id="projectsGrid">
+
+          <div class="project-card" data-cat="web">
+            <div class="project-thumb thumb-web">
+              <div class="thumb-pattern"></div>
+              <span class="thumb-label">Website</span>
+              <div class="thumb-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>Local Contractor Site</h3>
+              <p>Mobile-first site for a Nevada City contractor. Contact form, service pages, Google Maps, and local SEO built in.</p>
+              <div class="tag-row">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JavaScript</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-cat="app">
+            <div class="project-thumb thumb-app">
+              <div class="thumb-pattern"></div>
+              <span class="thumb-label">App</span>
+              <div class="thumb-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>Appointment Scheduler</h3>
+              <p>Booking app for a local service business. Clients pick a slot, get a confirmation, the owner sees a live calendar view.</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span>
+                <span class="tag">Supabase</span>
+                <span class="tag">Email API</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-cat="data">
+            <div class="project-thumb thumb-data">
+              <div class="thumb-pattern"></div>
+              <span class="thumb-label">Data</span>
+              <div class="thumb-icon">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>Sales Dashboard</h3>
+              <p>Browser-based dashboard pulling live from a Google Sheet. Daily revenue and top products at a glance, no login required.</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span>
+                <span class="tag">Chart.js</span>
+                <span class="tag">Sheets API</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" data-cat="web">
+            <div class="project-thumb thumb-custom">
+              <div class="thumb-pattern"></div>
+              <span class="thumb-label">Portfolio</span>
+              <div class="thumb-icon">
+                <!-- Bison mark -->
+                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 10 42 Q 9 35 11 31 Q 13 27 16 25 Q 14 22 14 18 Q 14 11 20 9 Q 24 7 27 10 Q 31 7 35 9 Q 40 12 41 18 Q 42 24 39 28 Q 45 29 49 33 Q 52 37 51 42 Q 50 46 47 47 L 45 45 Q 46 42 44 40 Q 42 38 39 39 L 36 48 L 32 48 L 32 39 L 28 39 L 28 48 L 24 48 L 24 39 Q 20 38 18 41 L 17 48 L 13 48 L 12 42 Z"
+                        fill="rgba(200,137,42,0.6)"/>
+                  <path d="M 20 9 Q 16 4 19 1" stroke="rgba(232,184,75,0.7)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3>This Portfolio Site</h3>
+              <p>Built from scratch in plain HTML, CSS, and JavaScript. No frameworks — just fast, clean, and fully custom.</p>
+              <div class="tag-row">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">Vanilla JS</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       PAGE: ABOUT
+       ========================== -->
+  <div class="page" id="page-about" data-title="About — Nathan Ashbaugh">
+    <div class="page-inner">
+      <div class="container">
+
+        <div class="about-grid">
+
+          <div>
+            <div class="page-header">
+              <span class="eyebrow">About</span>
+              <h2>Local Developer.<br>Practical Solutions.</h2>
+            </div>
+
+            <p>
+              I'm Nathan Ashbaugh, a programmer based in the Grass Valley and Nevada City area.
+              I build websites, create custom applications, and help local businesses find
+              simple, working tech solutions — without the big-agency overhead.
+            </p>
+            <p>
+              Whether you need a clean site that shows up in search, a tool that automates
+              part of your workflow, or someone to figure out why something broke —
+              I can help, and I'll keep it straightforward.
+            </p>
+
+            <div class="skills">
+              <h3>Technical Skills</h3>
+
+              <div class="skill-row">
+                <div class="skill-meta"><span>HTML &amp; CSS</span><span>95%</span></div>
+                <div class="skill-track"><div class="skill-bar" data-w="95%"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-meta"><span>JavaScript</span><span>88%</span></div>
+                <div class="skill-track"><div class="skill-bar" data-w="88%"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-meta"><span>Python</span><span>82%</span></div>
+                <div class="skill-track"><div class="skill-bar" data-w="82%"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-meta"><span>Databases &amp; APIs</span><span>78%</span></div>
+                <div class="skill-track"><div class="skill-bar" data-w="78%"></div></div>
+              </div>
+            </div>
+
+            <div style="margin-top:2rem;">
+              <button class="btn btn-primary" data-page="contact">Work With Me</button>
+            </div>
+          </div>
+
+          <!-- Bison mark panel -->
+          <div class="about-mark">
+            <div class="mark-frame">
+              <img src="assets/bison_logo.svg" alt="Bison side-profile mark"
+                   width="300" height="185" style="display:block;"/>
+              <div class="mark-tagline">
+                Nathan Ashbaugh
+                <span>Grass Valley, CA</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       PAGE: CONTACT
+       ========================== -->
+  <div class="page" id="page-contact" data-title="Contact — Nathan Ashbaugh">
+    <div class="page-inner">
+      <div class="container">
+
+        <div class="contact-wrap">
+
+          <div class="contact-left">
+            <span class="eyebrow">Contact</span>
+            <h2>Let's Work<br>Together.</h2>
+            <p>
+              Tell me about your project — what you're trying to accomplish,
+              roughly what you're working with, and any ideas you already have.
+              I'll get back to you within one business day.
+            </p>
+            <div class="contact-note">
+              No hard sell, no jargon. Just a straightforward conversation about what you need.
+            </div>
+          </div>
+
+          <form class="contact-form" id="contactForm" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="service">What do you need?</label>
+              <select id="service" name="service">
+                <option value="" disabled selected>Select one…</option>
+                <option value="website">Business Website</option>
+                <option value="app">Custom Web App</option>
+                <option value="data">Data / Automation</option>
+                <option value="fix">Fix or Upgrade an Existing Site</option>
+                <option value="other">Not Sure — Let's Talk</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Tell me about your project</label>
+              <textarea id="message" name="message" rows="4"
+                        placeholder="What are you trying to accomplish? Any details help."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
+
+            <div class="form-message" id="formMsg" role="alert"></div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       PAGE: GAME
+       ========================== -->
+  <div class="page" id="page-game" data-title="Wyoming Wrangler — Nathan Ashbaugh">
+    <div class="game-page-wrap">
+
+      <div class="game-page-header">
+        <div class="container">
+          <span class="eyebrow">Mini-Game</span>
+          <h2>Wyoming Wrangler</h2>
+          <p class="game-desc">
+            A 3D browser game built with Three.js — ride a bison across the Wyoming plains
+            and rope 3 giant chickens before the sun sets. Built to show off what's possible
+            in a browser with no frameworks, no downloads.
+          </p>
+        </div>
+      </div>
+
+      <div class="game-frame-wrap">
+        <iframe
+          id="gameFrame"
+          src="games/wyoming-wrangler.html"
+          title="Wyoming Wrangler game"
+          allow="pointer-lock"
+          allowfullscreen
+        ></iframe>
+        <div class="game-hint">Click inside the game window to lock the mouse and start playing.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bison Logo Concepts — Nathan Ashbaugh</title>
+  <style>
+    :root {
+      --brown: #2C1A0E;
+      --gold: #C8892A;
+      --gold-lt: #E8B84B;
+      --sage: #5C7A4A;
+      --cream: #F5F0E6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #1A1208;
+      color: var(--cream);
+      min-height: 100vh;
+      padding: 3rem 2rem 5rem;
+    }
+    header { text-align: center; margin-bottom: 3.5rem; }
+    header p { color: rgba(245,240,230,0.5); font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    header h1 { font-family: Georgia, serif; font-size: 2rem; color: var(--gold-lt); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .concept {
+      background: #241508;
+      border: 1px solid rgba(200,137,42,0.18);
+      border-radius: 16px;
+      padding: 2.5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .concept:hover {
+      border-color: rgba(200,137,42,0.5);
+      transform: translateY(-4px);
+    }
+
+    .logo-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      height: 160px;
+    }
+
+    /* Dark bg swatch */
+    .on-dark { background: #1A0E06; border-radius: 12px; padding: 1.5rem; }
+    /* Light bg swatch */
+    .on-light { background: #F5F0E6; border-radius: 12px; padding: 1.5rem; }
+
+    .swatches {
+      display: flex;
+      gap: 1rem;
+    }
+    .swatch {
+      border-radius: 10px;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swatch svg { width: 48px; height: 48px; }
+    .swatch.dark { background: #1A0E06; }
+    .swatch.light { background: #F5F0E6; }
+    .swatch.gold-bg { background: var(--gold); }
+
+    .concept-label {
+      text-align: center;
+    }
+    .concept-label .option { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .concept-label h2 { font-family: Georgia, serif; font-size: 1.2rem; color: var(--cream); margin-bottom: 0.4rem; }
+    .concept-label p { font-size: 0.82rem; color: rgba(245,240,230,0.55); line-height: 1.6; max-width: 220px; }
+
+    .wordmark-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #1A0E06;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+    }
+    .wordmark-text {
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      color: var(--cream);
+    }
+    .wordmark-text span {
+      display: block;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1px;
+    }
+
+    footer { text-align: center; margin-top: 4rem; color: rgba(245,240,230,0.3); font-size: 0.8rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <p>Nathan Ashbaugh · Brand Identity</p>
+  <h1>Bison Logo Concepts</h1>
+</header>
+
+<div class="grid">
+
+  <!-- ==============================
+       OPTION A — Minimal Silhouette
+       ============================== -->
+  <div class="concept">
+    <div class="logo-preview on-dark">
+      <!-- Option A: Clean bison profile silhouette, pure geometry -->
+      <svg viewBox="0 0 120 120" width="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- Full body silhouette — minimal paths, no cartoon detail -->
+        <path d="
+          M 20 82
+          Q 18 70 22 62
+          Q 26 54 32 50
+          Q 28 44 28 36
+          Q 28 22 40 18
+          Q 48 14 54 20
+          Q 62 14 70 18
+          Q 80 24 82 36
+          Q 84 48 78 56
+          Q 90 58 98 66
+          Q 104 74 102 84
+          Q 100 92 94 94
+          L 90 90
+          Q 92 84 88 80
+          Q 84 76 78 78
+          L 72 96
+          L 64 96
+          L 64 78
+          L 56 78
+          L 56 96
+          L 48 96
+          L 48 78
+          Q 40 76 36 82
+          L 34 96
+          L 26 96
+          L 24 82
+          Z
+        " fill="#C8892A"/>
+        <!-- Horn -->
+        <path d="M 40 18 Q 32 8 38 2" stroke="#E8B84B" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M 52 16 Q 50 6 56 2" stroke="#E8B84B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- Eye -->
+        <circle cx="36" cy="32" r="3" fill="#1A0A04"/>
+      </svg>
+    </div>
+
+    <div class="swatches">
+      <div class="swatch dark">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 82 Q 18 70 22 62 Q 26 54 32 50 Q 28 44 28 36 Q 28 22 40 18 Q 48 14 54 20 Q 62 14 70 18 Q 80 24 82 36 Q 84 48 78 56 Q 90 58 98 66 Q 104 74 102 84 Q 100 92 94 94 L 90 90 Q 92 84 88 80 Q 84 76 78 78 L 72 96 L 64 96 L 64 78 L 56 78 L 56 96 L 48 96 L 48 78 Q 40 76 36 82 L 34 96 L 26 96 L 24 82 Z" fill="#C8892A"/>
+          <path d="M 40 18 Q 32 8 38 2" stroke="#E8B84B" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle cx="36" cy="32" r="3" fill="#1A0A04"/>
+        </svg>
+      </div>
+      <div class="swatch light">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 82 Q 18 70 22 62 Q 26 54 32 50 Q 28 44 28 36 Q 28 22 40 18 Q 48 14 54 20 Q 62 14 70 18 Q 80 24 82 36 Q 84 48 78 56 Q 90 58 98 66 Q 104 74 102 84 Q 100 92 94 94 L 90 90 Q 92 84 88 80 Q 84 76 78 78 L 72 96 L 64 96 L 64 78 L 56 78 L 56 96 L 48 96 L 48 78 Q 40 76 36 82 L 34 96 L 26 96 L 24 82 Z" fill="#2C1A0E"/>
+          <path d="M 40 18 Q 32 8 38 2" stroke="#C8892A" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle cx="36" cy="32" r="3" fill="#F5F0E6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <svg viewBox="0 0 120 120" width="28" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 20 82 Q 18 70 22 62 Q 26 54 32 50 Q 28 44 28 36 Q 28 22 40 18 Q 48 14 54 20 Q 62 14 70 18 Q 80 24 82 36 Q 84 48 78 56 Q 90 58 98 66 Q 104 74 102 84 Q 100 92 94 94 L 90 90 Q 92 84 88 80 Q 84 76 78 78 L 72 96 L 64 96 L 64 78 L 56 78 L 56 96 L 48 96 L 48 78 Q 40 76 36 82 L 34 96 L 26 96 L 24 82 Z" fill="#C8892A"/>
+        <path d="M 40 18 Q 32 8 38 2" stroke="#E8B84B" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <div class="wordmark-text">Nathan Ashbaugh<span>Web Developer</span></div>
+    </div>
+
+    <div class="concept-label">
+      <p class="option">Option A</p>
+      <h2>Minimal Silhouette</h2>
+      <p>Clean single-path silhouette. Reads well at any size — from favicon to banner.</p>
+    </div>
+  </div>
+
+  <!-- ==============================
+       OPTION B — Circle Badge / Emblem
+       ============================== -->
+  <div class="concept">
+    <div class="logo-preview on-dark">
+      <svg viewBox="0 0 120 120" width="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ring -->
+        <circle cx="60" cy="60" r="54" fill="none" stroke="#C8892A" stroke-width="2.5"/>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(200,137,42,0.3)" stroke-width="1"/>
+        <!-- Bison head profile inside -->
+        <!-- Body/hump -->
+        <ellipse cx="68" cy="70" rx="22" ry="16" fill="#C8892A"/>
+        <ellipse cx="52" cy="62" rx="16" ry="18" fill="#B07828"/>
+        <!-- Head -->
+        <ellipse cx="38" cy="66" rx="12" ry="10" fill="#906020"/>
+        <!-- Beard -->
+        <ellipse cx="31" cy="74" rx="6" ry="7" fill="#704810"/>
+        <!-- Fur tuft on head -->
+        <ellipse cx="36" cy="56" rx="9" ry="6" fill="#704810"/>
+        <!-- Eye -->
+        <circle cx="33" cy="63" r="2.5" fill="#1A0A04"/>
+        <circle cx="32" cy="62" r="1" fill="rgba(255,255,255,0.3)"/>
+        <!-- Horn -->
+        <path d="M 36 56 Q 28 46 34 40" stroke="#E8B84B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- Legs -->
+        <rect x="52" y="82" width="6" height="18" rx="3" fill="#906020"/>
+        <rect x="62" y="83" width="6" height="17" rx="3" fill="#A07028"/>
+        <rect x="74" y="82" width="6" height="18" rx="3" fill="#906020"/>
+        <!-- Text arc — NATHAN ASHBAUGH -->
+        <path id="topArc" d="M 16 60 A 44 44 0 0 1 104 60" fill="none"/>
+        <text font-family="Georgia, serif" font-size="8.5" fill="#E8B84B" letter-spacing="2">
+          <textPath href="#topArc" startOffset="8%">NATHAN ASHBAUGH</textPath>
+        </text>
+        <!-- Bottom text arc -->
+        <path id="botArc" d="M 20 68 A 44 44 0 0 0 100 68" fill="none"/>
+        <text font-family="'Segoe UI', sans-serif" font-size="6.5" fill="rgba(200,137,42,0.7)" letter-spacing="3">
+          <textPath href="#botArc" startOffset="15%">GRASS VALLEY · CA</textPath>
+        </text>
+      </svg>
+    </div>
+
+    <div class="swatches">
+      <div class="swatch dark">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="#C8892A" stroke-width="3"/>
+          <ellipse cx="68" cy="68" rx="20" ry="14" fill="#C8892A"/>
+          <ellipse cx="52" cy="60" rx="15" ry="16" fill="#B07828"/>
+          <ellipse cx="38" cy="64" rx="11" ry="9" fill="#906020"/>
+          <ellipse cx="31" cy="72" rx="5" ry="6" fill="#704810"/>
+          <ellipse cx="36" cy="54" rx="8" ry="5" fill="#704810"/>
+          <circle cx="33" cy="61" r="2" fill="#1A0A04"/>
+          <path d="M 36 54 Q 28 44 34 38" stroke="#E8B84B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <rect x="52" y="78" width="5" height="14" rx="2.5" fill="#906020"/>
+          <rect x="61" y="79" width="5" height="13" rx="2.5" fill="#A07028"/>
+          <rect x="72" y="78" width="5" height="14" rx="2.5" fill="#906020"/>
+        </svg>
+      </div>
+      <div class="swatch gold-bg">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="#2C1A0E" stroke-width="3"/>
+          <ellipse cx="68" cy="68" rx="20" ry="14" fill="#2C1A0E"/>
+          <ellipse cx="52" cy="60" rx="15" ry="16" fill="#3A2210"/>
+          <ellipse cx="38" cy="64" rx="11" ry="9" fill="#4A2A14"/>
+          <ellipse cx="31" cy="72" rx="5" ry="6" fill="#1A0A04"/>
+          <ellipse cx="36" cy="54" rx="8" ry="5" fill="#1A0A04"/>
+          <circle cx="33" cy="61" r="2" fill="#F5F0E6"/>
+          <path d="M 36 54 Q 28 44 34 38" stroke="#1A0A04" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <svg viewBox="0 0 120 120" width="28" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="54" fill="none" stroke="#C8892A" stroke-width="3"/>
+        <ellipse cx="68" cy="68" rx="20" ry="14" fill="#C8892A"/>
+        <ellipse cx="52" cy="60" rx="15" ry="16" fill="#B07828"/>
+        <ellipse cx="38" cy="64" rx="11" ry="9" fill="#906020"/>
+        <ellipse cx="31" cy="72" rx="5" ry="6" fill="#704810"/>
+        <ellipse cx="36" cy="54" rx="8" ry="5" fill="#704810"/>
+        <circle cx="33" cy="61" r="2" fill="#1A0A04"/>
+        <path d="M 36 54 Q 28 44 34 38" stroke="#E8B84B" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+      <div class="wordmark-text">Nathan Ashbaugh<span>Web Developer · Grass Valley</span></div>
+    </div>
+
+    <div class="concept-label">
+      <p class="option">Option B</p>
+      <h2>Circle Emblem</h2>
+      <p>Classic badge with name and location arc text. Formal, trustworthy — great for business cards.</p>
+    </div>
+  </div>
+
+  <!-- ==============================
+       OPTION C — Bison Head Mark (Geometric)
+       ============================== -->
+  <div class="concept">
+    <div class="logo-preview on-dark">
+      <svg viewBox="0 0 100 100" width="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- Geometric bison head — angular, modern -->
+        <!-- Horns -->
+        <path d="M 28 30 L 18 12 L 28 18" fill="#E8B84B"/>
+        <path d="M 52 26 L 58 10 L 52 18" fill="#E8B84B"/>
+        <!-- Main head shape -->
+        <polygon points="20,30 30,20 55,22 62,32 58,48 48,56 30,56 20,48" fill="#C8892A"/>
+        <!-- Forehead/hump fur — darker polygon -->
+        <polygon points="20,30 30,20 42,22 38,38 22,40" fill="#A06020"/>
+        <!-- Nose area -->
+        <polygon points="30,56 48,56 44,70 36,72" fill="#905818"/>
+        <!-- Beard -->
+        <polygon points="34,70 46,68 42,82 36,84" fill="#704810"/>
+        <!-- Eye -->
+        <polygon points="28,36 34,33 36,38 30,40" fill="#1A0A04"/>
+        <circle cx="31" cy="37" r="2" fill="#1A0A04"/>
+        <circle cx="30" cy="36" r="0.8" fill="rgba(255,255,255,0.4)"/>
+        <!-- Nostril -->
+        <ellipse cx="33" cy="62" rx="3" ry="2" fill="#5A3010" transform="rotate(-10 33 62)"/>
+        <!-- Subtle shadow line -->
+        <line x1="38" y1="38" x2="46" y2="56" stroke="rgba(100,50,10,0.25)" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <div class="swatches">
+      <div class="swatch dark">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 28 30 L 18 12 L 28 18" fill="#E8B84B"/>
+          <path d="M 52 26 L 58 10 L 52 18" fill="#E8B84B"/>
+          <polygon points="20,30 30,20 55,22 62,32 58,48 48,56 30,56 20,48" fill="#C8892A"/>
+          <polygon points="20,30 30,20 42,22 38,38 22,40" fill="#A06020"/>
+          <polygon points="30,56 48,56 44,70 36,72" fill="#905818"/>
+          <polygon points="34,70 46,68 42,82 36,84" fill="#704810"/>
+          <circle cx="31" cy="37" r="2" fill="#1A0A04"/>
+        </svg>
+      </div>
+      <div class="swatch light">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 28 30 L 18 12 L 28 18" fill="#C8892A"/>
+          <path d="M 52 26 L 58 10 L 52 18" fill="#C8892A"/>
+          <polygon points="20,30 30,20 55,22 62,32 58,48 48,56 30,56 20,48" fill="#2C1A0E"/>
+          <polygon points="20,30 30,20 42,22 38,38 22,40" fill="#1A0A04"/>
+          <polygon points="30,56 48,56 44,70 36,72" fill="#3A2010"/>
+          <polygon points="34,70 46,68 42,82 36,84" fill="#2A1808"/>
+          <circle cx="31" cy="37" r="2" fill="#F5F0E6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <svg viewBox="0 0 100 100" width="28" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 28 30 L 18 12 L 28 18" fill="#E8B84B"/>
+        <path d="M 52 26 L 58 10 L 52 18" fill="#E8B84B"/>
+        <polygon points="20,30 30,20 55,22 62,32 58,48 48,56 30,56 20,48" fill="#C8892A"/>
+        <polygon points="20,30 30,20 42,22 38,38 22,40" fill="#A06020"/>
+        <polygon points="30,56 48,56 44,70 36,72" fill="#905818"/>
+        <circle cx="31" cy="37" r="2" fill="#1A0A04"/>
+      </svg>
+      <div class="wordmark-text">Nathan Ashbaugh<span>Web Developer</span></div>
+    </div>
+
+    <div class="concept-label">
+      <p class="option">Option C</p>
+      <h2>Geometric Head Mark</h2>
+      <p>Angular, modern geometry. Distinctive and edgy — stands out in a tech context.</p>
+    </div>
+  </div>
+
+  <!-- ==============================
+       OPTION D — Foothills + Bison Landscape
+       ============================== -->
+  <div class="concept">
+    <div class="logo-preview on-dark">
+      <svg viewBox="0 0 160 90" width="200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sky gradient implied by background -->
+        <!-- Rolling hills -->
+        <path d="M 0 55 Q 40 30 80 50 Q 120 70 160 45 L 160 90 L 0 90 Z" fill="#3D5A28" opacity="0.8"/>
+        <path d="M 0 68 Q 50 50 100 62 Q 130 70 160 58 L 160 90 L 0 90 Z" fill="#4A6A30"/>
+        <!-- Oak tree silhouette (right) -->
+        <ellipse cx="138" cy="52" rx="16" ry="12" fill="#243618"/>
+        <ellipse cx="128" cy="57" rx="11" ry="9" fill="#1E2E14"/>
+        <rect x="134" y="62" width="4" height="28" rx="2" fill="#1A1008"/>
+        <!-- Oak tree left -->
+        <ellipse cx="22" cy="58" rx="13" ry="10" fill="#243618"/>
+        <ellipse cx="30" cy="62" rx="9" ry="8" fill="#1E2E14"/>
+        <rect x="18" y="66" width="4" height="24" rx="2" fill="#1A1008"/>
+        <!-- Bison walking silhouette (centered, in front of hills) -->
+        <g transform="translate(56, 36)">
+          <!-- Body -->
+          <ellipse cx="26" cy="28" rx="22" ry="14" fill="#C8892A"/>
+          <!-- Hump -->
+          <ellipse cx="14" cy="20" rx="14" ry="14" fill="#B07020"/>
+          <!-- Head -->
+          <ellipse cx="4" cy="26" rx="10" ry="8" fill="#905818"/>
+          <!-- Beard -->
+          <ellipse cx="-1" cy="33" rx="5" ry="6" fill="#704010"/>
+          <!-- Eye -->
+          <circle cx="0" cy="23" r="1.8" fill="#1A0A04"/>
+          <!-- Horn -->
+          <path d="M 2 18 Q -6 10 0 5" stroke="#E8B84B" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <!-- Legs -->
+          <rect x="10" y="38" width="5" height="18" rx="2.5" fill="#804A14"/>
+          <rect x="18" y="39" width="5" height="17" rx="2.5" fill="#905818"/>
+          <rect x="30" y="38" width="5" height="18" rx="2.5" fill="#804A14"/>
+          <rect x="38" y="39" width="5" height="17" rx="2.5" fill="#905818"/>
+          <!-- Tail -->
+          <path d="M 48 24 Q 56 18 54 28" stroke="#804A14" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- Ground line -->
+        <line x1="0" y1="88" x2="160" y2="88" stroke="rgba(200,137,42,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="swatches">
+      <div class="swatch dark" style="width:100px; border-radius:8px;">
+        <svg viewBox="0 0 160 90" width="80" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 0 55 Q 40 30 80 50 Q 120 70 160 45 L 160 90 L 0 90 Z" fill="#3D5A28" opacity="0.8"/>
+          <path d="M 0 68 Q 50 50 100 62 Q 130 70 160 58 L 160 90 L 0 90 Z" fill="#4A6A30"/>
+          <ellipse cx="138" cy="52" rx="16" ry="12" fill="#243618"/>
+          <rect x="134" y="62" width="4" height="28" rx="2" fill="#1A1008"/>
+          <ellipse cx="22" cy="58" rx="13" ry="10" fill="#243618"/>
+          <rect x="18" y="66" width="4" height="24" rx="2" fill="#1A1008"/>
+          <g transform="translate(56, 36)">
+            <ellipse cx="26" cy="28" rx="22" ry="14" fill="#C8892A"/>
+            <ellipse cx="14" cy="20" rx="14" ry="14" fill="#B07020"/>
+            <ellipse cx="4" cy="26" rx="10" ry="8" fill="#905818"/>
+            <circle cx="0" cy="23" r="1.8" fill="#1A0A04"/>
+            <path d="M 2 18 Q -6 10 0 5" stroke="#E8B84B" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <svg viewBox="0 0 60 34" width="52" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 20 Q 15 11 30 19 Q 45 26 60 17 L 60 34 L 0 34 Z" fill="#3D5A28" opacity="0.8"/>
+        <path d="M 0 25 Q 18 18 36 23 Q 49 26 60 22 L 60 34 L 0 34 Z" fill="#4A6A30"/>
+        <g transform="translate(18, 12)">
+          <ellipse cx="12" cy="11" rx="10" ry="6" fill="#C8892A"/>
+          <ellipse cx="6" cy="8" rx="7" ry="7" fill="#B07020"/>
+          <ellipse cx="2" cy="10" rx="5" ry="4" fill="#905818"/>
+          <circle cx="0" cy="9" r="1" fill="#1A0A04"/>
+          <path d="M 1 7 Q -3 3 0 1" stroke="#E8B84B" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        </g>
+      </svg>
+      <div class="wordmark-text">Nathan Ashbaugh<span>Web Developer · Foothills CA</span></div>
+    </div>
+
+    <div class="concept-label">
+      <p class="option">Option D</p>
+      <h2>Foothills Scene</h2>
+      <p>Landscape scene with bison, hills, and oak silhouettes. Full storytelling — best as a hero banner mark.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Open <a href="index.html">index.html</a> to see your site. Tell me which option you want and I'll update the nav logo.</p>
+</footer>
+
+</body>
+</html>

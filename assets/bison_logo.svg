@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 200 210"
+     width="200" height="210"
+     aria-label="Bison logo mark">
+
+  <!-- ════════════════════════════════════════════════════════
+       LAYER 1 — DARK SILHOUETTE
+       One closed path, clockwise from hump peak.
+       ════════════════════════════════════════════════════════ -->
+  <path d="
+    M 104  20
+    C 126  10  154  26  172  58
+    C 184  80  184 112  178 142
+    L 178 192
+    L  46 192
+    C  34 190   22 174   18 158
+    C  14 142   14 126   16 110
+    C  14  94    6  80    6  70
+    C   4  56   14  44   30  40
+    C  42  34   56  32   70  46
+    C  82  52   90  64   92  78
+    C  94  88   92  94   88  88
+    C  90  80   98  58  102  36
+    C 103  28  104  22  104  20
+    Z
+  " fill="#1E0C04"/>
+
+  <!-- ════════════════════════════════════════════════════════
+       LAYER 2 — AMBER: LIT FACE
+
+       In the reference photos the front of the face catches
+       the light — a warm zone covering the muzzle, forehead,
+       and jaw.  This is the bison equivalent of the KFC
+       Colonel's lit face carved out of the red silhouette.
+       ════════════════════════════════════════════════════════ -->
+  <path d="
+    M  28  40
+    C  18  42    8  54    8  68
+    C   8  84   12 100   18 110
+    C  24 116   34 116   40 110
+    C  46 104   44  90   40  78
+    C  38  68   38  54   32  44
+    C  30  40   28  40   28  40
+    Z
+  " fill="#C8892A"/>
+
+  <!-- ════════════════════════════════════════════════════════
+       LAYER 2 — AMBER: HUMP RIDGE
+
+       The sunlit left slope of the hump — a bold tapered wedge.
+       Thicker at the neck-dip base, tapering to the peak.
+       ════════════════════════════════════════════════════════ -->
+  <path d="
+    M  88  88
+    C  92  74   98  52  102  34
+    C 103  26  104  20  104  20
+    C 106  28  108  46  106  64
+    C 104  78  100  86   88  88
+    Z
+  " fill="#C8892A"/>
+
+  <!-- ════════════════════════════════════════════════════════
+       LAYER 2 — AMBER: HORN
+       Bold crescent. Widest at the base, tapers to a point.
+       Curves upward and slightly forward (left) from the head.
+       ════════════════════════════════════════════════════════ -->
+  <path d="
+    M  64  50
+    C  56  36   50  18   54   8
+    C  56   2   64   2   68   8
+    C  72  18   72  36   64  50
+    Z
+  " fill="#C8892A"/>
+
+  <!-- Horn leading-edge sheen -->
+  <path d="M 65 48 C 58 32 52 14 55 6"
+        stroke="rgba(255,215,100,0.5)"
+        stroke-width="2"
+        stroke-linecap="round"
+        fill="none"/>
+
+  <!-- ════════════════════════════════════════════════════════
+       EYE — sits on the amber face zone
+       White iris with dark pupil pops against the amber.
+       ════════════════════════════════════════════════════════ -->
+  <circle cx="24" cy="68" r="5.5" fill="#F5EDE0"/>
+  <circle cx="24" cy="68" r="2.8" fill="#1E0C04"/>
+
+</svg>

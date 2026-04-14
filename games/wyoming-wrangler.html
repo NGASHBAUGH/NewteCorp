@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wyoming Wrangler</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { overflow:hidden; background:#000; font-family:Georgia,serif; }
+canvas { display:block; }
+
+#hud {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  pointer-events:none; z-index:10;
+}
+#caught-display {
+  position:absolute; top:16px; left:20px;
+  color:#FFD700; font-size:22px; font-weight:bold;
+  text-shadow:2px 2px 5px #000;
+}
+#timer-container {
+  position:absolute; top:16px; right:20px; width:200px;
+}
+#timer-label {
+  color:#FFD700; font-size:12px; font-weight:bold;
+  text-shadow:1px 1px 3px #000; margin-bottom:4px; text-align:right;
+  letter-spacing:0.15em;
+}
+#timer-bar-bg {
+  width:200px; height:14px;
+  background:rgba(0,0,0,0.5); border:2px solid #888; border-radius:7px; overflow:hidden;
+}
+#timer-bar {
+  height:100%; width:100%;
+  background:linear-gradient(to right,#FFD700,#FFA500);
+  border-radius:5px;
+}
+#miss-counter {
+  position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+  display:flex; gap:10px; align-items:center;
+}
+.rope-icon {
+  width:28px; height:28px; border-radius:50%;
+  border:3px solid #8B4513; background:transparent;
+  transition:background 0.2s;
+}
+.rope-icon.missed { background:#8B4513; }
+
+#miss-label {
+  position:absolute; bottom:58px; left:50%; transform:translateX(-50%);
+  color:#C8892A; font-size:12px; letter-spacing:0.15em; text-shadow:1px 1px 3px #000;
+  white-space:nowrap;
+}
+
+/* Splash */
+#splash {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:rgba(10,5,2,0.93);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:200; color:#FFD700;
+}
+#splash h1 { font-size:clamp(28px,6vw,56px); text-shadow:3px 3px 10px #000; margin-bottom:12px; }
+#splash .tagline { font-size:clamp(13px,2.2vw,18px); color:#FFC; margin-bottom:24px; text-align:center; }
+#splash .controls {
+  font-size:clamp(12px,1.8vw,15px); color:#BBB; margin-bottom:28px;
+  text-align:center; line-height:2.2; border:1px solid rgba(200,137,42,0.3);
+  padding:14px 28px; border-radius:8px; background:rgba(200,137,42,0.06);
+}
+#click-play {
+  font-size:clamp(18px,3vw,26px); color:#FFD700;
+  animation:blink 1.4s infinite; cursor:pointer;
+  border:2px solid #FFD700; padding:12px 44px; border-radius:8px;
+  pointer-events:all;
+}
+#click-play:hover { background:rgba(255,215,0,0.1); }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+/* Overlay (win/loss/buck) */
+#overlay {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:rgba(8,4,1,0.9);
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  z-index:200; color:#FFD700; pointer-events:all;
+  text-align:center; padding:20px;
+}
+#overlay.show { display:flex; }
+#overlay-title { font-size:clamp(24px,5vw,48px); text-shadow:3px 3px 10px #000; margin-bottom:14px; max-width:680px; }
+#overlay-sub   { font-size:clamp(14px,2.2vw,20px); color:#FFC; margin-bottom:28px; max-width:560px; }
+.btn-reset {
+  font-size:clamp(16px,2.5vw,22px); color:#1C0E06; background:#FFD700;
+  border:none; padding:12px 44px; border-radius:8px; cursor:pointer;
+  font-family:Georgia,serif; font-weight:bold;
+}
+.btn-reset:hover { background:#FFC000; }
+
+/* Catch popup */
+#catch-popup {
+  position:fixed; top:44%; left:50%; transform:translate(-50%,-50%) scale(0);
+  color:#FFD700; font-size:clamp(20px,4vw,38px); font-weight:bold;
+  text-shadow:3px 3px 8px #000; z-index:50; pointer-events:none;
+  white-space:nowrap; text-align:center;
+}
+#catch-popup.pop { animation:popAnim 1.6s forwards; }
+@keyframes popAnim {
+  0%  { transform:translate(-50%,-50%) scale(0); opacity:0; }
+  18% { transform:translate(-50%,-50%) scale(1.25); opacity:1; }
+  70% { transform:translate(-50%,-50%) scale(1.0);  opacity:1; }
+  100%{ transform:translate(-50%,-50%) scale(0.85); opacity:0; }
+}
+
+/* Toast */
+#toast-bar {
+  position:fixed; bottom:78px; left:50%; transform:translateX(-50%);
+  color:#FF8C00; font-size:clamp(15px,2.5vw,20px); font-weight:bold;
+  text-shadow:2px 2px 4px #000; z-index:50; pointer-events:none;
+  opacity:0; transition:opacity 0.3s; white-space:nowrap;
+}
+#toast-bar.show { opacity:1; }
+</style>
+</head>
+<body>
+
+<!-- HUD -->
+<div id="hud">
+  <div id="caught-display">Chickens Caught: 0 / 3</div>
+  <div id="timer-container">
+    <div id="timer-label">SUNSET TIMER</div>
+    <div id="timer-bar-bg"><div id="timer-bar"></div></div>
+  </div>
+  <div id="miss-label">CONSECUTIVE MISSES</div>
+  <div id="miss-counter">
+    <div class="rope-icon" id="r0"></div>
+    <div class="rope-icon" id="r1"></div>
+    <div class="rope-icon" id="r2"></div>
+    <div class="rope-icon" id="r3"></div>
+    <div class="rope-icon" id="r4"></div>
+  </div>
+</div>
+
+<div id="catch-popup"></div>
+<div id="toast-bar"></div>
+
+<!-- Splash -->
+<div id="splash">
+  <h1>Wyoming Wrangler</h1>
+  <p class="tagline">Rope 3 giant chickens before the sun sets!</p>
+  <div class="controls">
+    <strong>Arrow Keys</strong> — Move &amp; Turn &nbsp;|&nbsp;
+    <strong>Mouse</strong> — Aim Lasso<br>
+    <strong>Left Click</strong> — Throw Lasso<br>
+    Miss 5 in a row and the bison bucks you off.<br>
+    Watch out for tumbleweeds!
+  </div>
+  <div id="click-play">CLICK TO PLAY</div>
+</div>
+
+<!-- Win/Loss/Buck overlay -->
+<div id="overlay">
+  <div id="overlay-title"></div>
+  <div id="overlay-sub"></div>
+  <button class="btn-reset" id="btn-again">Try Again</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ================================================================
+   WYOMING WRANGLER — Full Game
+   ================================================================ */
+
+const GAME_SEC   = 90;
+const MAP_W      = 2400;
+const MAP_H      = 1800;
+const LASSO_CD   = 1.2;    // seconds cooldown
+const LASSO_GO   = 0.4;    // travel time
+const LASSO_RET  = 0.2;    // return time
+const CATCH_R    = 50;     // base catch radius
+const MAX_MISS   = 5;
+const PHYS_STEP  = 1/120;
+
+// ── DOM ──────────────────────────────────────────────────────────
+const splashEl   = document.getElementById('splash');
+const overlayEl  = document.getElementById('overlay');
+const oTitle     = document.getElementById('overlay-title');
+const oSub       = document.getElementById('overlay-sub');
+const btnAgain   = document.getElementById('btn-again');
+const caughtDisp = document.getElementById('caught-display');
+const timerBar   = document.getElementById('timer-bar');
+const catchPopup = document.getElementById('catch-popup');
+const toastBar   = document.getElementById('toast-bar');
+const ropeIcons  = [0,1,2,3,4].map(i => document.getElementById('r'+i));
+
+// ── Renderer ─────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+scene.fog    = new THREE.Fog(0xC8A060, 800, 2800);
+const camera = new THREE.PerspectiveCamera(65, innerWidth/innerHeight, 1, 5000);
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ── Lights ───────────────────────────────────────────────────────
+const ambient  = new THREE.AmbientLight(0xFFDDA0, 0.55);
+scene.add(ambient);
+
+const sunLight = new THREE.DirectionalLight(0xFFD080, 1.2);
+sunLight.position.set(500, 400, -800);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(2048, 2048);
+Object.assign(sunLight.shadow.camera, { near:1, far:3000, left:-1000, right:1000, top:1000, bottom:-1000 });
+scene.add(sunLight);
+
+// ── Sky ──────────────────────────────────────────────────────────
+const skyMat  = new THREE.MeshBasicMaterial({ color:0x87CEEB, side:THREE.BackSide });
+const skySph  = new THREE.Mesh(new THREE.SphereGeometry(4500,16,8), skyMat);
+scene.add(skySph);
+
+// Sun ball
+const sunBall = new THREE.Mesh(
+  new THREE.SphereGeometry(55, 12, 8),
+  new THREE.MeshBasicMaterial({ color:0xFFDD44 })
+);
+sunBall.position.set(700, 200, -2000);
+scene.add(sunBall);
+
+// ── Ground ───────────────────────────────────────────────────────
+const gGeo = new THREE.PlaneGeometry(MAP_W, MAP_H, 80, 60);
+const gPos = gGeo.attributes.position;
+for (let i = 0; i < gPos.count; i++) gPos.setZ(i, gPos.getZ(i) + (Math.random()-0.5)*4);
+gGeo.computeVertexNormals();
+const ground = new THREE.Mesh(gGeo, new THREE.MeshLambertMaterial({ color:0xC2984E }));
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// Invisible ray-plane
+const rayPlane = new THREE.Mesh(
+  new THREE.PlaneGeometry(MAP_W*3, MAP_H*3),
+  new THREE.MeshBasicMaterial({ visible:false, side:THREE.DoubleSide })
+);
+rayPlane.rotation.x = -Math.PI/2;
+scene.add(rayPlane);
+
+// ── Mountains ────────────────────────────────────────────────────
+(function buildMountains() {
+  const mat = new THREE.MeshLambertMaterial({ color:0x3C4A50, side:THREE.DoubleSide });
+  [[0,-900],[1,-880],[2,-920],[3,-870],[4,-910],[5,-890],[6,-900],[7,-870]].forEach(([i]) => {
+    const x = -900 + i * 260;
+    const w = 280 + Math.random()*200;
+    const h = 180 + Math.random()*220;
+    const geo = new THREE.BufferGeometry();
+    const v = new Float32Array([
+      x - w/2, 0, -900,
+      x,       h, -900,
+      x + w/2, 0, -900
+    ]);
+    geo.setAttribute('position', new THREE.BufferAttribute(v, 3));
+    scene.add(new THREE.Mesh(geo, mat));
+  });
+  // South hills
+  for (let i = 0; i < 6; i++) {
+    const x = -700 + i * 260;
+    const w = 240 + Math.random()*180;
+    const h = 130 + Math.random()*160;
+    const geo = new THREE.BufferGeometry();
+    const v = new Float32Array([x-w/2,0,900, x,h,900, x+w/2,0,900]);
+    geo.setAttribute('position', new THREE.BufferAttribute(v,3));
+    scene.add(new THREE.Mesh(geo, mat));
+  }
+})();
+
+// ── Sagebrush (InstancedMesh) ─────────────────────────────────────
+(function buildSage() {
+  const N = 80;
+  const mat = new THREE.MeshLambertMaterial({ color:0x7B8C5A });
+  const geo = new THREE.SphereGeometry(8,6,4);
+  const inst = new THREE.InstancedMesh(geo, mat, N);
+  const d = new THREE.Object3D();
+  for (let i = 0; i < N; i++) {
+    d.position.set((Math.random()-0.5)*MAP_W*0.88, 5, (Math.random()-0.5)*MAP_H*0.88);
+    const s = 0.7 + Math.random()*0.9;
+    d.scale.set(s, s*0.55, s);
+    d.updateMatrix();
+    inst.setMatrixAt(i, d.matrix);
+  }
+  inst.instanceMatrix.needsUpdate = true;
+  scene.add(inst);
+
+  // Stems
+  const stemGeo = new THREE.CylinderGeometry(1.5,1.5,8,5);
+  const stemMat = new THREE.MeshLambertMaterial({ color:0x8B7355 });
+  const stems = new THREE.InstancedMesh(stemGeo, stemMat, N);
+  // reuse same positions — grab from inst
+  for (let i = 0; i < N; i++) {
+    inst.getMatrixAt(i, d.matrix);
+    d.matrix.decompose(d.position, d.quaternion, d.scale);
+    d.scale.set(1,1,1);
+    d.position.y = 0;
+    d.updateMatrix();
+    stems.setMatrixAt(i, d.matrix);
+  }
+  stems.instanceMatrix.needsUpdate = true;
+  scene.add(stems);
+})();
+
+// ── Tumbleweeds ──────────────────────────────────────────────────
+const tumbleweeds = [];
+const twMat = new THREE.MeshBasicMaterial({ color:0x9B8060, wireframe:true });
+for (let i = 0; i < 5; i++) {
+  const mesh = new THREE.Mesh(new THREE.TorusGeometry(10+Math.random()*4, 3, 6, 12), twMat);
+  mesh.position.set((Math.random()-0.5)*MAP_W*0.8, 8, (Math.random()-0.5)*MAP_H*0.8);
+  scene.add(mesh);
+  // Wind blows mostly west-to-east with slight north drift
+  const angle = -0.2 + (Math.random()-0.5)*0.5;
+  tumbleweeds.push({
+    mesh,
+    speed: 18 + Math.random()*6,
+    dir: new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle)).normalize()
+  });
+}
+
+// ── Bison ────────────────────────────────────────────────────────
+function buildBison() {
+  const g    = new THREE.Group();
+  const bMat = new THREE.MeshLambertMaterial({ color:0x5C3A1A });
+  const hMat = new THREE.MeshLambertMaterial({ color:0x3B2208 });
+  const lMat = new THREE.MeshLambertMaterial({ color:0x4A2E10 });
+  const hrMat= new THREE.MeshLambertMaterial({ color:0xEEDDAA });
+
+  // Body
+  const body = new THREE.Mesh(new THREE.BoxGeometry(50,32,80), bMat);
+  body.castShadow = true;
+  g.add(body);
+
+  // Hump
+  const hump = new THREE.Mesh(new THREE.BoxGeometry(28,24,28), bMat);
+  hump.position.set(0, 24, -16);
+  g.add(hump);
+
+  // Head
+  const head = new THREE.Mesh(new THREE.BoxGeometry(26,24,30), hMat);
+  head.position.set(0, 10, -54);
+  head.castShadow = true;
+  g.add(head);
+
+  // Nose pad
+  const nose = new THREE.Mesh(new THREE.BoxGeometry(20,14,10), new THREE.MeshLambertMaterial({ color:0x28140A }));
+  nose.position.set(0, 4, -68);
+  g.add(nose);
+
+  // Horns
+  [-1,1].forEach(s => {
+    const horn = new THREE.Mesh(new THREE.CylinderGeometry(1.5,2.5,15,6), hrMat);
+    horn.position.set(s*16, 23, -53);
+    horn.rotation.z = s*0.4; horn.rotation.x = -0.15;
+    g.add(horn);
+  });
+
+  // Tail
+  const tail = new THREE.Mesh(new THREE.CylinderGeometry(2,1,18,5), bMat);
+  tail.position.set(0,4,43); tail.rotation.x = 0.45;
+  g.add(tail);
+
+  // Legs
+  const legY = -22, legs = [];
+  [[-18,legY,-26],[18,legY,-26],[-18,legY,24],[18,legY,24]].forEach(p => {
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(5,4,32,6), lMat);
+    leg.position.set(...p); leg.castShadow = true;
+    g.add(leg); legs.push(leg);
+  });
+
+  g.position.y = 36;
+  return { group:g, head, legs };
+}
+const bison = buildBison();
+scene.add(bison.group);
+
+// ── Bison State ──────────────────────────────────────────────────
+const BS = {
+  pos:    new THREE.Vector3(0, 36, 0),
+  angle:  0,
+  speed:  0,
+  moving: false,
+  idleT:  0, idleHA:0, idleHD:1, stompT:0,
+  buckT:  0, bucking:false
+};
+
+// ── Chickens ─────────────────────────────────────────────────────
+const CATCH_MSGS = [
+  'GOT ONE! THE PLAINS TREMBLE!',
+  "ROPED! THEY DIDN'T SEE THAT COMING!",
+  "YOU'RE A LEGEND, WRANGLER!"
+];
+
+function buildChicken(scale) {
+  const g    = new THREE.Group();
+  const bodyMat = new THREE.MeshLambertMaterial({ color:0xFFF5DC });
+  const orgMat  = new THREE.MeshLambertMaterial({ color:0xFF8C00 });
+  const redMat  = new THREE.MeshLambertMaterial({ color:0xFF2020 });
+  const wingMat = new THREE.MeshLambertMaterial({ color:0xEEE0C0 });
+
+  const R = 26 * scale;
+
+  // Body
+  const body = new THREE.Mesh(new THREE.SphereGeometry(R,10,8), bodyMat);
+  body.castShadow = true;
+  g.add(body);
+
+  // Head
+  const hR = R * 0.54;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(hR,8,6), bodyMat);
+  head.position.set(0, R*0.85, -R*0.8);
+  g.add(head);
+
+  // Wattle
+  const w = new THREE.Mesh(new THREE.BoxGeometry(scale*5,scale*8,scale*4), redMat);
+  w.position.set(0, R*0.55, -R*1.15);
+  g.add(w);
+
+  // Beak
+  const beak = new THREE.Mesh(new THREE.ConeGeometry(scale*4,scale*9,5), orgMat);
+  beak.rotation.x = -Math.PI/2;
+  beak.position.set(0, R*0.85, -R*1.5);
+  g.add(beak);
+
+  // Wings
+  const wings = [];
+  [-1,1].forEach(side => {
+    const wing = new THREE.Mesh(new THREE.BoxGeometry(scale*14,scale*10,scale*22), wingMat);
+    wing.position.set(side*(R+scale*5), R*0.08, 0);
+    wing.rotation.z = side * 0.3;
+    g.add(wing); wings.push(wing);
+  });
+
+  // Legs + feet
+  const legH = R * 0.88;
+  [-1,1].forEach(side => {
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(scale*3,scale*2.5,legH,6), orgMat);
+    leg.position.set(side*R*0.38, -R - legH/2, 0);
+    g.add(leg);
+    const foot = new THREE.Mesh(new THREE.BoxGeometry(scale*12,scale*4,scale*14), orgMat);
+    foot.position.set(side*R*0.38, -R - legH, scale*3);
+    g.add(foot);
+  });
+
+  g.position.y = R + legH + 4;
+  return { group:g, wings, R };
+}
+
+const chickens = [];
+const CHICK_DEFS = [
+  { scale:1.5, speed:40  },
+  { scale:0.6, speed:110 },
+  { scale:1.0, speed:60  },
+  { scale:1.0, speed:60  },
+  { scale:1.0, speed:60  },
+  { scale:1.0, speed:60  },
+];
+
+function spawnChickens() {
+  chickens.forEach(c => scene.remove(c.group));
+  chickens.length = 0;
+  CHICK_DEFS.forEach((def, i) => {
+    const c = buildChicken(def.scale);
+    const ang  = Math.random()*Math.PI*2;
+    const dist = 200 + Math.random()*500;
+    c.group.position.set(Math.cos(ang)*dist, c.group.position.y, Math.sin(ang)*dist);
+    scene.add(c.group);
+    chickens.push({
+      group: c.group, wings: c.wings, R: c.R,
+      scale: def.scale, speed: def.speed,
+      pos:   new THREE.Vector3().copy(c.group.position),
+      angle: Math.random()*Math.PI*2,
+      wT:    1.5 + Math.random()*3,
+      wI:    i===1 ? 0.8+Math.random()*0.8 : 2+Math.random()*2.5,
+      panicT:0, flap:0, caught:false, tiny:i===1
+    });
+  });
+}
+
+// ── Reticle ──────────────────────────────────────────────────────
+const reticle = new THREE.Mesh(
+  new THREE.TorusGeometry(18,2.5,8,26),
+  new THREE.MeshBasicMaterial({ color:0xFFFF00, transparent:true, opacity:0.85 })
+);
+reticle.rotation.x = Math.PI/2;
+reticle.visible = false;
+scene.add(reticle);
+
+// Trajectory dots
+const NDOTS = 12;
+const dots  = [];
+for (let i = 0; i < NDOTS; i++) {
+  const d = new THREE.Mesh(
+    new THREE.SphereGeometry(2.2,5,4),
+    new THREE.MeshBasicMaterial({ color:0xFFFF00, transparent:true, opacity:1 })
+  );
+  d.visible = false;
+  scene.add(d);
+  dots.push(d);
+}
+
+// ── Lasso ────────────────────────────────────────────────────────
+const lassoMesh = new THREE.Mesh(
+  new THREE.TorusGeometry(14,2,8,22),
+  new THREE.MeshBasicMaterial({ color:0xFFCC00 })
+);
+lassoMesh.visible = false;
+scene.add(lassoMesh);
+
+const LS = {
+  phase: 0,  // 0=idle, 1=going, 2=returning
+  t:     0,
+  cd:    0,
+  origin: new THREE.Vector3(),
+  target: new THREE.Vector3()
+};
+
+// ── Game State ───────────────────────────────────────────────────
+let gameActive = false;
+let caughtN    = 0;
+let missN      = 0;
+let timeLeft   = GAME_SEC;
+let physAccum  = 0;
+
+function resetGame() {
+  caughtN = 0; missN = 0; timeLeft = GAME_SEC; physAccum = 0;
+  LS.phase = 0; LS.cd = 0; lassoMesh.visible = false;
+
+  BS.pos.set(0, 36, 0); BS.angle = 0; BS.speed = 0;
+  BS.moving = false; BS.idleT = 0; BS.bucking = false; BS.buckT = 0;
+  bison.group.position.copy(BS.pos);
+  bison.group.rotation.y = 0; bison.group.rotation.x = 0;
+  bison.head.rotation.y = 0;
+
+  spawnChickens();
+  particles.length = 0;
+  hudUpdate(); missUpdate();
+  overlayEl.classList.remove('show');
+  gameActive = true;
+}
+
+// ── Input ────────────────────────────────────────────────────────
+const keys = {};
+document.addEventListener('keydown', e => { keys[e.code] = true; e.preventDefault(); });
+document.addEventListener('keyup',   e => { keys[e.code] = false; });
+
+let mx = innerWidth/2, my = innerHeight/2;
+let locked = false;
+
+document.addEventListener('mousemove', e => {
+  if (locked) {
+    mx = Math.max(0, Math.min(innerWidth,  mx + e.movementX));
+    my = Math.max(0, Math.min(innerHeight, my + e.movementY));
+  } else {
+    mx = e.clientX; my = e.clientY;
+  }
+});
+
+document.addEventListener('pointerlockchange', () => {
+  locked = document.pointerLockElement === renderer.domElement;
+});
+
+renderer.domElement.addEventListener('click', () => {
+  if (!gameActive) return;
+  if (!locked) { renderer.domElement.requestPointerLock(); return; }
+  doThrow();
+});
+
+document.getElementById('click-play').addEventListener('click', () => {
+  splashEl.style.display = 'none';
+  resetGame();
+  renderer.domElement.requestPointerLock();
+  mx = innerWidth/2; my = innerHeight/2;
+});
+
+btnAgain.addEventListener('click', () => {
+  resetGame();
+  renderer.domElement.requestPointerLock();
+  mx = innerWidth/2; my = innerHeight/2;
+});
+
+// ── Throw Lasso ──────────────────────────────────────────────────
+function doThrow() {
+  if (LS.cd > 0 || LS.phase !== 0) return;
+  LS.origin.copy(bison.group.position).add(new THREE.Vector3(0, 18, -32).applyEuler(new THREE.Euler(0, BS.angle, 0)));
+  LS.target.copy(reticle.position);
+  LS.phase = 1; LS.t = 0;
+  lassoMesh.visible = true;
+}
+
+// ── Hit Check ────────────────────────────────────────────────────
+function checkHit() {
+  const lp = LS.target.clone(); lp.y = 0;
+
+  // Tumbleweed?
+  for (const tw of tumbleweeds) {
+    const tp = tw.mesh.position.clone(); tp.y = 0;
+    if (lp.distanceTo(tp) < 28) {
+      showToast("THAT'S A TUMBLEWEED, PARTNER...");
+      addMiss(); return;
+    }
+  }
+
+  // Chicken?
+  for (const c of chickens) {
+    if (c.caught) continue;
+    const cp = c.pos.clone(); cp.y = 0;
+    if (lp.distanceTo(cp) < CATCH_R * c.scale) {
+      catchChicken(c); return;
+    }
+  }
+
+  addMiss();
+}
+
+function catchChicken(c) {
+  c.caught = true;
+  spawnParticles(c.pos.clone());
+  scene.remove(c.group);
+  missN = 0; caughtN++;
+  hudUpdate(); missUpdate();
+  const msg = CATCH_MSGS[Math.min(caughtN-1, 2)];
+  showPopup(msg);
+  if (caughtN >= 3) setTimeout(showWin, 1700);
+}
+
+function addMiss() {
+  missN++;
+  missUpdate();
+  if (missN >= MAX_MISS) {
+    missN = 0; missUpdate();
+    BS.bucking = true; BS.buckT = 0;
+  }
+}
+
+// ── HUD ──────────────────────────────────────────────────────────
+function hudUpdate() {
+  caughtDisp.textContent = `Chickens Caught: ${caughtN} / 3`;
+}
+function missUpdate() {
+  ropeIcons.forEach((el, i) => el.classList.toggle('missed', i < missN));
+}
+function barUpdate(t) {
+  const f = Math.max(0, t / GAME_SEC);
+  timerBar.style.width = (f*100)+'%';
+  const r = Math.round(255);
+  const g = Math.round(215 * f + 69 * (1-f));
+  const b = Math.round(f < 0.5 ? 0 : 0);
+  timerBar.style.background = `rgb(${r},${g},${b})`;
+}
+
+// ── Sunset ───────────────────────────────────────────────────────
+const skyC0 = new THREE.Color(0x87CEEB);
+const skyC1 = new THREE.Color(0xFF4500);
+const sunC0 = new THREE.Color(0xFFDD44);
+const sunC1 = new THREE.Color(0xFF4500);
+const litC0 = new THREE.Color(0xFFD080);
+const litC1 = new THREE.Color(0xFF4500);
+const fogC0 = new THREE.Color(0xC8A060);
+const fogC1 = new THREE.Color(0xFF6030);
+
+function updateSunset(t) {
+  const f = 1 - Math.max(0, t / GAME_SEC);
+  skyMat.color.lerpColors(skyC0, skyC1, f * 0.85);
+  sunBall.position.y = 200 - f * 250;
+  sunBall.material.color.lerpColors(sunC0, sunC1, f);
+  sunLight.color.lerpColors(litC0, litC1, f);
+  sunLight.intensity = Math.max(0.25, 1.2 - f * 0.95);
+  ambient.intensity = Math.max(0.15, 0.55 - f * 0.3);
+  scene.fog.color.lerpColors(fogC0, fogC1, f);
+}
+
+// ── Particles ────────────────────────────────────────────────────
+const particles = [];
+function spawnParticles(pos) {
+  const mat = new THREE.MeshBasicMaterial({ color:0xFFCC00, transparent:true });
+  for (let i = 0; i < 14; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(5,5,5), mat.clone());
+    p.position.copy(pos);
+    const v = new THREE.Vector3((Math.random()-0.5)*90, 30+Math.random()*70, (Math.random()-0.5)*90);
+    let age = 0;
+    particles.push(dt => {
+      age += dt;
+      p.position.addScaledVector(v, dt);
+      v.y -= 130*dt;
+      p.rotation.x += 5*dt; p.rotation.z += 4*dt;
+      p.material.opacity = Math.max(0, 1 - age/0.65);
+      if (age === 0) scene.add(p);
+      if (age >= 0.65) { scene.remove(p); return true; }
+    });
+  }
+}
+
+// ── Overlays ─────────────────────────────────────────────────────
+function showWin() {
+  end("YOU'RE A LEGEND, WRANGLER!", 'All 3 chickens roped! The plains are yours.');
+  document.getElementById('btn-again').textContent = 'Play Again';
+}
+function showLoss(msg, sub) {
+  end(msg, sub);
+  document.getElementById('btn-again').textContent = 'Try Again';
+}
+function end(title, sub) {
+  gameActive = false;
+  if (document.pointerLockElement) document.exitPointerLock();
+  oTitle.textContent = title; oSub.textContent = sub;
+  overlayEl.classList.add('show');
+}
+
+let toastTmr;
+function showToast(msg) {
+  toastBar.textContent = msg; toastBar.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(() => toastBar.classList.remove('show'), 2600);
+}
+
+function showPopup(msg) {
+  catchPopup.textContent = msg;
+  catchPopup.classList.remove('pop');
+  void catchPopup.offsetWidth;
+  catchPopup.classList.add('pop');
+  setTimeout(() => catchPopup.classList.remove('pop'), 1600);
+}
+
+// ── Raycaster ────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+const ndcMouse  = new THREE.Vector2();
+
+// ── Physics Step (120 Hz fixed) ──────────────────────────────────
+function physStep(dt) {
+  if (!gameActive) return;
+
+  // Bison movement
+  if (!BS.bucking) {
+    if (keys['ArrowLeft'])  BS.angle += 2.5 * dt;
+    if (keys['ArrowRight']) BS.angle -= 2.5 * dt;
+
+    BS.moving = keys['ArrowUp'] || keys['ArrowDown'];
+
+    if (keys['ArrowUp'])   BS.speed = Math.min(BS.speed + 180*dt*8, 180);
+    else if (keys['ArrowDown']) BS.speed = Math.max(BS.speed - 90*dt*8, -90);
+    else {
+      if (BS.speed > 0) BS.speed = Math.max(0, BS.speed - 9);
+      else              BS.speed = Math.min(0, BS.speed + 9);
+    }
+
+    const dx = -Math.sin(BS.angle) * BS.speed * dt;
+    const dz = -Math.cos(BS.angle) * BS.speed * dt;
+    BS.pos.x = Math.max(-MAP_W/2+60, Math.min(MAP_W/2-60, BS.pos.x + dx));
+    BS.pos.z = Math.max(-MAP_H/2+60, Math.min(MAP_H/2-60, BS.pos.z + dz));
+  }
+
+  bison.group.position.copy(BS.pos);
+  bison.group.rotation.y = BS.angle;
+
+  // Leg cycle
+  if (BS.moving) {
+    const t = performance.now() * 0.006;
+    bison.legs.forEach((l,i) => { l.rotation.x = Math.sin(t + (i%2)*Math.PI) * 0.42; });
+  } else {
+    bison.legs.forEach(l => { l.rotation.x *= 0.85; });
+  }
+
+  // Idle head sway
+  if (!BS.moving) {
+    BS.idleT += dt;
+    BS.idleHA += BS.idleHD * dt * 0.22;
+    if (BS.idleHA > 0.28) BS.idleHD = -1;
+    if (BS.idleHA < -0.28) BS.idleHD = 1;
+    bison.head.rotation.y = BS.idleHA;
+
+    BS.stompT += dt;
+    if (BS.stompT > 3.2) {
+      BS.stompT = 0;
+      let st = 0;
+      const id = setInterval(() => {
+        st += 0.06;
+        bison.legs[0].rotation.x = Math.sin(st * Math.PI * 2) * 0.55;
+        if (st >= 0.5) { bison.legs[0].rotation.x = 0; clearInterval(id); }
+      }, 16);
+    }
+  } else {
+    BS.idleHA = 0;
+    bison.head.rotation.y *= 0.9;
+  }
+
+  // Bucking
+  if (BS.bucking) {
+    BS.buckT += dt;
+    const p = (BS.buckT % 0.33) / 0.33;
+    bison.group.rotation.x = Math.sin(p * Math.PI * 2) * 0.54;
+    if (BS.buckT >= 1.0) {
+      BS.bucking = false; bison.group.rotation.x = 0;
+      setTimeout(() => showLoss("WHOA! THE BISON'S HAD ENOUGH!", "5 misses in a row — you got bucked off."), 80);
+    }
+  }
+
+  // Camera follow
+  const cDist = 230, cH = 105;
+  const tcx = BS.pos.x + Math.sin(BS.angle) * cDist;
+  const tcz = BS.pos.z + Math.cos(BS.angle) * cDist;
+  camera.position.x += (tcx - camera.position.x) * 8 * dt;
+  camera.position.y += (BS.pos.y + cH - camera.position.y) * 8 * dt;
+  camera.position.z += (tcz - camera.position.z) * 8 * dt;
+  camera.lookAt(BS.pos.x, BS.pos.y + 22, BS.pos.z);
+
+  // Reticle raycast
+  ndcMouse.x = (mx / innerWidth) * 2 - 1;
+  ndcMouse.y = -(my / innerHeight) * 2 + 1;
+  raycaster.setFromCamera(ndcMouse, camera);
+  const hits = raycaster.intersectObject(rayPlane);
+  if (hits.length > 0) {
+    reticle.position.copy(hits[0].point); reticle.position.y = 2;
+    reticle.visible = true;
+
+    // Trajectory dots
+    const fwd = new THREE.Vector3(-Math.sin(BS.angle)*42, 2, -Math.cos(BS.angle)*42).add(BS.pos);
+    fwd.y = 2;
+    if (LS.phase === 0) {
+      dots.forEach((d, i) => {
+        const t2 = (i+1)/(NDOTS+1);
+        d.position.lerpVectors(fwd, reticle.position, t2);
+        d.position.y = 3;
+        d.material.opacity = 0.25 + t2 * 0.75;
+        d.visible = true;
+      });
+    } else {
+      dots.forEach(d => { d.visible = false; });
+    }
+  } else {
+    reticle.visible = false;
+    dots.forEach(d => { d.visible = false; });
+  }
+
+  // Reticle pulse
+  const ps = 1 + 0.14 * Math.sin(performance.now() * 0.0078);
+  reticle.scale.set(ps, ps, 1);
+
+  // Lasso flight
+  if (LS.phase === 1) {
+    LS.t += dt / LASSO_GO;
+    if (LS.t >= 1) { LS.t = 1; LS.phase = 2; LS.t = 0; checkHit(); }
+    lassoMesh.position.lerpVectors(LS.origin, LS.target, LS.t);
+    lassoMesh.position.y += Math.sin(LS.t * Math.PI) * 45;
+    lassoMesh.rotation.x = LS.t * Math.PI * 1.5;
+  } else if (LS.phase === 2) {
+    LS.t += dt / LASSO_RET;
+    if (LS.t >= 1) { LS.phase = 0; lassoMesh.visible = false; LS.cd = LASSO_CD; }
+    lassoMesh.position.lerpVectors(LS.target, LS.origin, LS.t);
+    lassoMesh.position.y += Math.sin((1-LS.t) * Math.PI) * 20;
+  }
+  if (LS.cd > 0) LS.cd = Math.max(0, LS.cd - dt);
+
+  // Chickens
+  chickens.forEach(c => {
+    if (c.caught) return;
+    const d2bison = c.pos.distanceTo(BS.pos);
+
+    if (d2bison < 150 && c.panicT <= 0) { c.panicT = 3; c.flap = 0.6; }
+
+    let effSpeed = c.speed, ang = c.angle;
+    if (c.panicT > 0) {
+      c.panicT -= dt;
+      effSpeed = c.speed * 2.5;
+      const away = new THREE.Vector3().subVectors(c.pos, BS.pos).normalize();
+      ang = Math.atan2(-away.x, -away.z);
+      c.angle = ang;
+    } else {
+      c.wT -= dt;
+      if (c.wT <= 0) { c.angle = Math.random()*Math.PI*2; c.wT = c.wI; }
+    }
+
+    const ddx = -Math.sin(ang) * effSpeed * dt;
+    const ddz = -Math.cos(ang) * effSpeed * dt;
+    c.pos.x = Math.max(-MAP_W/2+60, Math.min(MAP_W/2-60, c.pos.x + ddx));
+    c.pos.z = Math.max(-MAP_H/2+60, Math.min(MAP_H/2-60, c.pos.z + ddz));
+    c.group.position.x = c.pos.x;
+    c.group.position.z = c.pos.z;
+    c.group.rotation.y = ang;
+
+    if (c.flap > 0) {
+      c.flap -= dt;
+      const fl = Math.sin(performance.now() * 0.022) * 0.85;
+      c.wings.forEach((w,i) => { w.rotation.z = (i===0?0.3:-0.3) + fl*(i===0?1:-1); });
+    } else {
+      c.wings.forEach((w,i) => { w.rotation.z = i===0?0.3:-0.3; });
+    }
+  });
+
+  // Tumbleweeds
+  tumbleweeds.forEach(tw => {
+    tw.mesh.position.addScaledVector(tw.dir, tw.speed * dt);
+    tw.mesh.rotation.x += dt * 1.3; tw.mesh.rotation.z += dt * 0.9;
+    if (tw.mesh.position.x >  MAP_W/2) tw.mesh.position.x = -MAP_W/2;
+    if (tw.mesh.position.x < -MAP_W/2) tw.mesh.position.x =  MAP_W/2;
+    if (tw.mesh.position.z >  MAP_H/2) tw.mesh.position.z = -MAP_H/2;
+    if (tw.mesh.position.z < -MAP_H/2) tw.mesh.position.z =  MAP_H/2;
+  });
+}
+
+// ── Main Loop ────────────────────────────────────────────────────
+let lastT = performance.now();
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  const dt = Math.min((now - lastT) / 1000, 0.05);
+  lastT = now;
+
+  if (gameActive) {
+    timeLeft -= dt;
+    barUpdate(timeLeft);
+    updateSunset(timeLeft);
+    if (timeLeft <= 0) {
+      timeLeft = 0; gameActive = false;
+      showLoss('The sun set... the chickens won.', 'Better luck at dawn, partner.');
+      if (document.pointerLockElement) document.exitPointerLock();
+    }
+
+    physAccum += dt;
+    while (physAccum >= PHYS_STEP) {
+      physStep(PHYS_STEP);
+      physAccum -= PHYS_STEP;
+    }
+
+    // Tick particles
+    for (let i = particles.length-1; i >= 0; i--) {
+      if (particles[i](dt)) particles.splice(i,1);
+    }
+  }
+
+  renderer.render(scene, camera);
+})(lastT);
+</script>
+</body>
+</html>
