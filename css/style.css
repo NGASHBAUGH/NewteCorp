@@ -97,8 +97,21 @@ h3 { font-size: clamp(1rem, 2vw, 1.3rem); }
   font-size: 1.05rem;
   letter-spacing: 0.01em;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
-.nav-logo svg { width: auto; height: 36px; flex-shrink: 0; }
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+.nav-logo svg { 
+  width: auto; 
+  height: 36px; 
+  flex-shrink: 0; 
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+.nav-logo:hover svg {
+  transform: scale(1.08) rotate(-2deg);
+  filter: drop-shadow(0 2px 8px rgba(200,137,42,0.3));
+}
 .nav-logo-name { line-height: 1.1; }
 .nav-logo-name small {
   display: block;
@@ -616,8 +629,23 @@ h3 { font-size: clamp(1rem, 2vw, 1.3rem); }
   padding: 1.75rem 1.75rem 1.5rem;
   display: flex; flex-direction: column; align-items: center; gap: 1rem;
   border: 1px solid rgba(200,137,42,0.15);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.mark-frame svg { width: 100%; height: auto; border-radius: 6px; overflow: hidden; }
+.mark-frame:hover {
+  border-color: rgba(200,137,42,0.35);
+  box-shadow: 0 8px 32px rgba(200,137,42,0.15);
+  transform: translateY(-4px);
+}
+.mark-frame svg { 
+  width: 100%; 
+  height: auto; 
+  border-radius: 6px; 
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.mark-frame:hover svg {
+  transform: scale(1.05) rotate(1deg);
+}
 .mark-tagline {
   font-family: var(--font-head);
   font-size: 0.95rem;

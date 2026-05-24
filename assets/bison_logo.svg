@@ -1,89 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 200 210"
-     width="200" height="210"
-     aria-label="Bison logo mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 240" width="300" height="240" aria-label="Bison head logo">
+  <defs>
+    <linearGradient id="humpatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B6F47;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6B5437;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4A3728;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="faceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2C1810;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A0F08;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 
-  <!-- ════════════════════════════════════════════════════════
-       LAYER 1 — DARK SILHOUETTE
-       One closed path, clockwise from hump peak.
-       ════════════════════════════════════════════════════════ -->
-  <path d="
-    M 104  20
-    C 126  10  154  26  172  58
-    C 184  80  184 112  178 142
-    L 178 192
-    L  46 192
-    C  34 190   22 174   18 158
-    C  14 142   14 126   16 110
-    C  14  94    6  80    6  70
-    C   4  56   14  44   30  40
-    C  42  34   56  32   70  46
-    C  82  52   90  64   92  78
-    C  94  88   92  94   88  88
-    C  90  80   98  58  102  36
-    C 103  28  104  22  104  20
-    Z
-  " fill="#1E0C04"/>
+  <!-- Back hump/shoulder - main body -->
+  <ellipse cx="80" cy="60" rx="65" ry="85" fill="url(#humpatGradient)" opacity="0.95"/>
+  
+  <!-- Hump detail shading layer 1 -->
+  <path d="M 60 40 Q 75 30 95 45 Q 100 50 95 70 Q 85 80 65 75 Z" fill="#7A5F3F" opacity="0.6"/>
+  
+  <!-- Hump detail shading layer 2 -->
+  <path d="M 85 25 Q 105 20 115 50 Q 110 60 95 55 Z" fill="#5A4829" opacity="0.5"/>
 
-  <!-- ════════════════════════════════════════════════════════
-       LAYER 2 — AMBER: LIT FACE
+  <!-- Neck connecting section -->
+  <path d="M 130 100 Q 155 95 170 130 L 165 150 Q 140 145 135 120 Z" fill="#3D2817" opacity="0.9"/>
 
-       In the reference photos the front of the face catches
-       the light — a warm zone covering the muzzle, forehead,
-       and jaw.  This is the bison equivalent of the KFC
-       Colonel's lit face carved out of the red silhouette.
-       ════════════════════════════════════════════════════════ -->
-  <path d="
-    M  28  40
-    C  18  42    8  54    8  68
-    C   8  84   12 100   18 110
-    C  24 116   34 116   40 110
-    C  46 104   44  90   40  78
-    C  38  68   38  54   32  44
-    C  30  40   28  40   28  40
-    Z
-  " fill="#C8892A"/>
+  <!-- Head upper muzzle profile (dark) -->
+  <ellipse cx="185" cy="110" rx="45" ry="50" fill="url(#faceGradient)"/>
+  
+  <!-- Muzzle/jaw (very dark) -->
+  <ellipse cx="215" cy="135" rx="35" ry="38" fill="#1A0F08"/>
+  
+  <!-- Face midtone area -->
+  <ellipse cx="220" cy="125" rx="20" ry="25" fill="#3C2414" opacity="0.8"/>
+  
+  <!-- Horn - curves upward -->
+  <g>
+    <path d="M 175 80 Q 165 50 168 20 Q 170 10 178 12 Q 182 45 185 75 Z" fill="#2A1810" stroke="#1A0F08" stroke-width="1"/>
+    <path d="M 176 78 Q 169 55 171 25" stroke="#4A3728" stroke-width="1.5" fill="none" opacity="0.6"/>
+  </g>
 
-  <!-- ════════════════════════════════════════════════════════
-       LAYER 2 — AMBER: HUMP RIDGE
+  <!-- Eye -->
+  <circle cx="195" cy="105" r="7" fill="#1C0E06"/>
+  <circle cx="197" cy="103" r="2.5" fill="#F5E6D3" opacity="0.9"/>
+  
+  <!-- Nostril -->
+  <ellipse cx="235" cy="138" rx="3" ry="2.5" fill="#0F0704"/>
+  
+  <!-- Mouth/jaw line -->
+  <path d="M 235 145 Q 245 148 255 145" stroke="#1A0F08" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 
-       The sunlit left slope of the hump — a bold tapered wedge.
-       Thicker at the neck-dip base, tapering to the peak.
-       ════════════════════════════════════════════════════════ -->
-  <path d="
-    M  88  88
-    C  92  74   98  52  102  34
-    C 103  26  104  20  104  20
-    C 106  28  108  46  106  64
-    C 104  78  100  86   88  88
-    Z
-  " fill="#C8892A"/>
+  <!-- Forehead wrinkle texture -->
+  <path d="M 180 85 Q 185 75 192 80" stroke="#4A3728" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M 185 90 Q 190 80 198 85" stroke="#5A4829" stroke-width="0.8" fill="none" opacity="0.4"/>
 
-  <!-- ════════════════════════════════════════════════════════
-       LAYER 2 — AMBER: HORN
-       Bold crescent. Widest at the base, tapers to a point.
-       Curves upward and slightly forward (left) from the head.
-       ════════════════════════════════════════════════════════ -->
-  <path d="
-    M  64  50
-    C  56  36   50  18   54   8
-    C  56   2   64   2   68   8
-    C  72  18   72  36   64  50
-    Z
-  " fill="#C8892A"/>
+  <!-- Chin/beard hair strands -->
+  <g opacity="0.7">
+    <path d="M 215 155 Q 218 165 215 172" stroke="#1A0F08" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M 225 160 Q 228 170 225 178" stroke="#1A0F08" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M 235 158 Q 238 168 235 175" stroke="#1A0F08" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M 245 155 Q 248 165 245 172" stroke="#1A0F08" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  </g>
 
-  <!-- Horn leading-edge sheen -->
-  <path d="M 65 48 C 58 32 52 14 55 6"
-        stroke="rgba(255,215,100,0.5)"
-        stroke-width="2"
-        stroke-linecap="round"
-        fill="none"/>
+  <!-- Shoulder muscle definition -->
+  <path d="M 110 140 Q 120 155 130 165" stroke="#5A4829" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
 
-  <!-- ════════════════════════════════════════════════════════
-       EYE — sits on the amber face zone
-       White iris with dark pupil pops against the amber.
-       ════════════════════════════════════════════════════════ -->
-  <circle cx="24" cy="68" r="5.5" fill="#F5EDE0"/>
-  <circle cx="24" cy="68" r="2.8" fill="#1E0C04"/>
-
+  <!-- Shadow under hump for depth -->
+  <ellipse cx="110" cy="155" rx="50" ry="25" fill="#3D2817" opacity="0.3"/>
 </svg>
